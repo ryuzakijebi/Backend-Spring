@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import jebi.hendardi.student.repository.StudentRepository;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @Transactional
