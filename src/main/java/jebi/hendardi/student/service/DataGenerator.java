@@ -1,8 +1,6 @@
 package jebi.hendardi.student.service;
 
-
 import jebi.hendardi.student.model.Student;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,22 +9,19 @@ import java.util.Random;
 
 public class DataGenerator {
 
+    private static final String[] NAME_PARTS = {"Sa", "Ku", "Ra", "Ma", "Na", "Ta", "I", "Yu", "Chi", "Ri", "Ka", "O", "E", "No", "Fu", "Me"};
+
     public static List<Student> generateStudents() {
         List<Student> students = new ArrayList<>();
         Random random = new Random();
 
-        // Generate unique names
-        String[] firstNames = {"John", "Emma", "Michael", "Sophia", "William", "Olivia", "James", "Ava", "Robert", "Mia"};
-        String[] lastNames = {"Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez"};
-
-        // Generate 500 students for each department
         String[] departments = {"Informatics Engineering", "Computer Engineering", "Information Systems", "Software Engineering", "Digital Business"};
         for (String department : departments) {
             for (int i = 0; i < 500; i++) {
                 Student student = new Student();
-                String firstName = firstNames[random.nextInt(firstNames.length)];
-                String lastName = lastNames[random.nextInt(lastNames.length)];
-                String fullName = firstName + " " + lastName;
+                String firstName = generateName(random);
+                String lastName = generateName(random);
+                String fullName = capitalizeFirstLetter(firstName) + " " + capitalizeFirstLetter(lastName);
                 student.setName(fullName);
                 student.setStudentID(generateRandomStudentID());
                 student.setEmail(generateRandomEmail(firstName, lastName));
@@ -38,9 +33,18 @@ public class DataGenerator {
         return students;
     }
 
+    private static String generateName(Random random) {
+        StringBuilder name = new StringBuilder();
+        String firstPart = NAME_PARTS[random.nextInt(NAME_PARTS.length)];
+        String secondPart = NAME_PARTS[random.nextInt(NAME_PARTS.length)];
+        name.append(capitalizeFirstLetter(firstPart));
+        name.append(secondPart.toLowerCase());
+        return name.toString();
+    }
+
     public static void writeStudentsToCSV(List<Student> students) throws IOException {
         FileWriter writer = new FileWriter("src/main/resources/students.csv");
-        writer.append("Name,Student ID,Email,Department\n");
+        writer.append("Name,StudentID,Email,Department\n");
         for (Student student : students) {
             writer.append(student.getName()).append(",");
             writer.append(student.getStudentID()).append(",");
@@ -53,8 +57,8 @@ public class DataGenerator {
 
     private static String generateRandomStudentID() {
         Random random = new Random();
-        int min = 10000000; // 8 digit minimum
-        int max = 999999999; // 10 digit maximum
+        int min = 10000000;
+        int max = 999999999;
         int studentID = random.nextInt(max - min + 1) + min;
         return String.valueOf(studentID);
     }
@@ -65,5 +69,9 @@ public class DataGenerator {
         String emailProvider = emailProviders[random.nextInt(emailProviders.length)];
         String email = firstName.toLowerCase() + "." + lastName.toLowerCase() + "@" + emailProvider;
         return email;
+    }
+
+    private static String capitalizeFirstLetter(String str) {
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 }
