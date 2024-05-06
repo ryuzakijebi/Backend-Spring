@@ -3,7 +3,6 @@ package jebi.hendardi.student.service;
 import jakarta.transaction.Transactional;
 import jebi.hendardi.student.exception.UserNotFoundException;
 import jebi.hendardi.student.model.Student;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import jebi.hendardi.student.repository.StudentRepository;
 
@@ -14,7 +13,6 @@ import java.util.List;
 public class StudentService {
     private final StudentRepository studentRepository;
 
-    @Autowired
     public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
