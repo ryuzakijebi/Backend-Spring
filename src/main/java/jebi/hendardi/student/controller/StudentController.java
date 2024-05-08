@@ -38,6 +38,13 @@ public class StudentController {
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
 
+    @GetMapping("/partial/{pageIndex}/{pageSize}")
+    public ResponseEntity<List<Student>> getPartialStudents(@PathVariable("pageIndex") int pageIndex,
+            @PathVariable("pageSize") int pageSize) {
+        List<Student> students = studentService.findPartialStudents(pageIndex * pageSize, pageSize);
+        return new ResponseEntity<>(students, HttpStatus.OK);
+    }
+
     @GetMapping("/find/{id}")
     public ResponseEntity<Student> getStudentById(@PathVariable("id") Long id) {
         Student student = studentService.findStudentById(id);
@@ -95,8 +102,5 @@ public class StudentController {
 
         return new ResponseEntity<>("Students CSV generated successfully", HttpStatus.OK);
     }
-
-    
-
 
 }

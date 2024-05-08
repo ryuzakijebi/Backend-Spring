@@ -14,6 +14,7 @@ import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 import jebi.hendardi.student.model.Student;
 import jebi.hendardi.student.repository.StudentRepository;
@@ -54,10 +55,11 @@ public class BatchConfig {
     @Bean
     public Step importStep() {
         return new StepBuilder("csvImport", jobRepository)
-            .<Student, Student>chunk(10, platformTransactionManager)
+            .<Student, Student>chunk(10000, platformTransactionManager)
             .reader(itemReader())
             .processor(processor())
             .writer(writer())
+            .taskExecutor(new SimpleAsyncTaskExecutor())
             .build();
     }
 

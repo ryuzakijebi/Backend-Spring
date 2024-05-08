@@ -3,6 +3,8 @@ package jebi.hendardi.student.service;
 import jakarta.transaction.Transactional;
 import jebi.hendardi.student.exception.UserNotFoundException;
 import jebi.hendardi.student.model.Student;
+
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import jebi.hendardi.student.repository.StudentRepository;
 
@@ -15,6 +17,10 @@ public class StudentService {
 
     public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
+    }
+
+    public List<Student> findPartialStudents(int startIndex, int limit) {
+        return studentRepository.findAll(PageRequest.of(startIndex, limit)).getContent();
     }
 
     public Student addStudent(Student student) {
@@ -34,8 +40,7 @@ public class StudentService {
                 .orElseThrow(() -> new UserNotFoundException("User by id " + id + " was not found"));
     }
 
-    public void deleteStudent(Long id){
+    public void deleteStudent(Long id) {
         studentRepository.deleteStudentById(id);
     }
 }
-

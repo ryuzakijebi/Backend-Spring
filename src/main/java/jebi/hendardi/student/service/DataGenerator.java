@@ -17,7 +17,7 @@ public class DataGenerator {
 
         String[] departments = {"Informatics Engineering", "Computer Engineering", "Information Systems", "Software Engineering", "Digital Business"};
         for (String department : departments) {
-            for (int i = 0; i < 500; i++) {
+            for (int i = 0; i < 200000; i++) {
                 Student student = new Student();
                 String firstName = generateName(random);
                 String lastName = generateName(random);
