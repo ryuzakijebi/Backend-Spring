@@ -45,7 +45,6 @@ public class StudentController {
         List<Student> students = studentService.findPartialStudentsSortedById(startIndex, pageSize);
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
-   
 
     @GetMapping("/find/{id}")
     public ResponseEntity<Student> getStudentById(@PathVariable("id") Long id) {
@@ -59,13 +58,20 @@ public class StudentController {
         return new ResponseEntity<>(newStudent, HttpStatus.CREATED);
     }
 
+    @GetMapping("/byDepartment/{department}/{pageIndex}/{pageSize}")
+    public ResponseEntity<List<Student>> getStudentsByDepartment(@PathVariable("department") String department,
+            @PathVariable("pageIndex") int pageIndex, @PathVariable("pageSize") int pageSize) {
+        List<Student> students = studentService.findStudentsByDepartmentWithPagination(department, pageIndex, pageSize);
+        return new ResponseEntity<>(students, HttpStatus.OK);
+    }
+
     @PutMapping("/update/{id}")
     public ResponseEntity<Student> updateStudent(@PathVariable("id") Long id, @RequestBody Student updatedStudent) {
         Student existingStudent = studentService.findStudentById(id);
         if (existingStudent == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        updatedStudent.setId(id);                                                                                                                                                       
+        updatedStudent.setId(id);
         Student updated = studentService.updateStudent(updatedStudent);
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }

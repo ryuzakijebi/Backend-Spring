@@ -31,6 +31,16 @@ public class StudentService {
             return Collections.emptyList();
         }
     }
+
+    public List<Student> findStudentsByDepartment(String department) {
+        return studentRepository.findStudentsByDepartment(department);
+    }
+
+    public List<Student> findStudentsByDepartmentWithPagination(String department, int pageIndex, int pageSize) {
+        Page<Student> page = studentRepository.findStudentsByDepartment(department, PageRequest.of(pageIndex, pageSize, Sort.by("id")));
+        return page.getContent();
+    }
+    
     
 
     public Student addStudent(Student student) {
